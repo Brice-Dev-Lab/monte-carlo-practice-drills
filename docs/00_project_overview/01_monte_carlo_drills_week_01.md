@@ -210,7 +210,7 @@ Using historical resampling, what is the probability that flow exceeds 700 cfs i
 
 ## Create the Raw Dataset
 
-Create `data/raw/annual_peak_flows_dirty.csv` using this generator, then work only from the saved dirty file:
+Create `data/raw/engineering/week_01/annual_peak_flows_dirty.csv` using this generator, then work only from the saved dirty file:
 
 ```python
 from pathlib import Path
@@ -230,7 +230,9 @@ df = pd.DataFrame(
     }
 )
 
-# Inject realistic defects.
+# Inject realistic defects. Peak Flow holds a stray string, so it must be
+# object dtype -- pandas refuses to upcast float64 on assignment.
+df["Peak Flow"] = df["Peak Flow"].astype(object)
 df.loc[5, "Peak Flow"] = np.nan
 df.loc[12, "Peak Flow"] = " 515.6 "
 df.loc[18, "Units"] = "CFS"
@@ -239,8 +241,8 @@ df.loc[28, "Status"] = "Provisional"
 df = pd.concat([df, df.iloc[[9]]], ignore_index=True)
 df = df.sample(frac=1, random_state=41).reset_index(drop=True)
 
-Path("data/raw").mkdir(parents=True, exist_ok=True)
-df.to_csv("data/raw/annual_peak_flows_dirty.csv", index=False)
+Path("data/raw/engineering/week_01").mkdir(parents=True, exist_ok=True)
+df.to_csv("data/raw/engineering/week_01/annual_peak_flows_dirty.csv", index=False)
 ```
 
 ## Data-Cleaning Tasks
@@ -462,4 +464,3 @@ Use these only after attempting the drills:
 - In Drill 2, the simulated 10-year probability should be close to `1 - (1 - p)^10` when years are sampled independently.
 - In Drill 3, a distribution that permits materially negative sales is inappropriate unless refunds or reversals are explicitly being modeled.
 - In Drill 4, the P80 contingency is the difference between P80 total cost and the deterministic base estimate; it is not automatically 20%.
-
