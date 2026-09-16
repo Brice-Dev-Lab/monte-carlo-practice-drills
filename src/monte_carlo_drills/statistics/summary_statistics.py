@@ -3,7 +3,7 @@
 import pandas as pd
 
 
-def  summary_statistics(df: pd.DataFrame) -> pd.DataFrame:
+def summary_statistics(df: pd.DataFrame) -> pd.DataFrame:
     """Calculates summary statistics"""
     summary = {
         "minimum": df["peak_flow"].min(),
@@ -13,4 +13,3 @@ def  summary_statistics(df: pd.DataFrame) -> pd.DataFrame:
     }
 
     return pd.DataFrame([summary])
-    
