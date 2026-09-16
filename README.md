@@ -334,32 +334,7 @@ Before a drill is considered complete, confirm that:
 
 ## Suggested Repository Structure
 
-```text
-monte-carlo-modeling-drills/
-├── README.md
-├── pyproject.toml
-├── data/
-│   ├── raw/
-│   ├── interim/
-│   └── processed/
-├── shared/
-│   ├── data_generators/
-│   ├── simulation_utils/
-│   └── validation/
-├── drills/
-│   ├── week_01/
-│   │   ├── finance_01/
-│   │   ├── engineering_01/
-│   │   ├── companion_01/
-│   │   └── companion_02/
-│   └── week_02/
-├── templates/
-│   ├── finance_dashboard.xlsx
-│   ├── assumptions_register.xlsx
-│   └── model_review_checklist.md
-├── reports/
-└── tests/
-```
+See the [Project Structure](docs/01_structure/00_structure.md) document for a recommended directory layout, naming conventions, and file types.
 
 ## Definition of Completion
 

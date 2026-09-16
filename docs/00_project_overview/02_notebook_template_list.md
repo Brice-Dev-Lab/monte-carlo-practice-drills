@@ -65,16 +65,154 @@ The ingestion notebook therefore documents both **what arrived in the raw datase
 
 ### 01 - Baseline Analysis
 
-**Purpose:** Establish a simple reference point before more detailed exploration or modeling.
+**Purpose:** Establish a simple, understandable reference point that describes the current or historical condition before performing detailed exploratory analysis or building a more sophisticated model.
 
-Typical activities include:
+The baseline answers:
 
-* Basic engineering or financial calculations
-* Historical averages
-* Simple deterministic estimates
-* Existing-rule or existing-method results
-* Naive forecasts or benchmarks
-* Current-condition performance metrics
+> **What does the data tell us using simple, established methods before we introduce more advanced analysis?**
+
+The baseline becomes the reference against which later EDA, simulations, forecasts, or predictive models can be compared.
+
+#### Primary Objectives
+
+A baseline analysis should:
+
+* Summarize the most important historical or current conditions.
+* Establish representative values using simple calculations.
+* Identify the range and scale of the observed data.
+* Calculate domain-specific metrics that are already understood and accepted.
+* Establish a benchmark for evaluating later modeling results.
+* Remain simple enough that the results can be easily explained and reproduced.
+
+#### Typical Baseline Metrics
+
+The appropriate metrics depend on the problem, but may include:
+
+**General**
+
+* Count of usable observations
+* Minimum and maximum
+* Mean and median
+* Range
+* Historical totals or averages
+* Rates or percentages
+* Current-condition values
+
+**Municipal Engineering**
+
+* Historical average flow
+* Maximum observed flow
+* Minimum observed flow
+* Design flow or design capacity
+* Average annual demand
+* Peak-to-average ratios
+* Existing system capacity
+* Historical exceedance counts
+* Current level-of-service metrics
+* Deterministic design calculations
+
+**Finance**
+
+* Historical revenue and expenses
+* Revenue growth
+* Gross or operating margins
+* Historical cash flow
+* Average historical return
+* Current valuation
+* Existing budget or forecast
+* Simple DCF or deterministic projection
+* Current financial ratios
+
+#### Use Simple Methods
+
+Baseline analysis should favor methods that are:
+
+* Easy to calculate
+* Easy to explain
+* Based directly on observed data
+* Commonly understood within the problem domain
+* Reproducible without advanced modeling assumptions
+
+Avoid introducing unnecessary complexity at this stage. The goal is not to build the best possible model. The goal is to establish a credible reference point.
+
+For example, before using Monte Carlo simulation to estimate uncertain future peak flows, first establish what the historical record says using ordinary descriptive and engineering calculations.
+
+#### Distinguish Baseline Analysis from EDA
+
+Baseline analysis and EDA may use some of the same data, but they serve different purposes.
+
+**Baseline analysis asks:**
+
+> What are the basic historical or current conditions that later results should be compared against?
+
+**EDA asks:**
+
+> What patterns, distributions, relationships, trends, and unusual behavior exist within the data?
+
+For example, calculating the historical mean peak flow is appropriate for the baseline. Investigating the shape of the peak-flow distribution with histograms, comparing potential probability distributions, or examining relationships over time belongs in EDA.
+
+#### Distinguish Baseline Analysis from Modeling
+
+The baseline should generally avoid:
+
+* Monte Carlo simulation
+* Predictive modeling
+* Regression models
+* Machine-learning models
+* Complex probability models
+* Scenario simulation
+* Optimization
+
+Those methods belong in later modeling notebooks.
+
+The baseline should provide something against which those advanced methods can be evaluated.
+
+#### Domain Knowledge Matters
+
+Baseline analysis is not simply a list of statistical calculations. Use engineering, financial, or business knowledge to determine which reference values actually matter.
+
+For an engineering problem, ask:
+
+* What values would normally appear in a design calculation or engineering report?
+* What historical conditions matter to the design decision?
+* What existing standards, capacities, or thresholds provide useful reference points?
+
+For a financial problem, ask:
+
+* What metrics would management normally review?
+* What historical performance provides a useful benchmark?
+* What current budget, forecast, or operating target should later scenarios be compared against?
+
+#### Keep Interpretation Limited
+
+Briefly explain what the baseline values mean, but avoid performing the detailed investigation intended for EDA.
+
+For example:
+
+> Historical annual peak flows average approximately X cfs, with observed values ranging from Y to Z cfs.
+
+That establishes context.
+
+Investigating why certain years are unusually high, whether the distribution is skewed, whether flows exhibit a trend, or which probability distribution best represents the data belongs in EDA.
+
+#### Expected Output
+
+At the end of the baseline notebook, you should have:
+
+* A small set of clearly defined benchmark metrics.
+* A concise description of historical or current conditions.
+* Any relevant deterministic engineering or financial calculations.
+* A reference point that later modeling results can be compared against.
+* A clear understanding of what the advanced model must improve upon or add to the analysis.
+
+#### Completion Question
+
+Before moving to EDA, you should be able to answer:
+
+> **If I had to explain the current or historical condition using only simple, established calculations, what would I report?**
+
+If you can answer that clearly, the baseline analysis has done its job.
+
 
 The baseline provides a reference against which later modeling results can be compared.
 
