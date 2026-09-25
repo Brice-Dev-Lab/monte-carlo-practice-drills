@@ -2,7 +2,7 @@
 
 ## Weekly Theme
 
-**From deterministic estimates to distributions of possible outcomes**
+> **From deterministic estimates to distributions of possible outcomes**
 
 This week introduces four foundational ideas:
 
@@ -43,27 +43,27 @@ rng = np.random.default_rng(20260914)
 
 ---
 
-# Drill 1 — Finance: One-Asset Return and Loss Risk
+## Drill 1 — Finance: One-Asset Return and Loss Risk
 
-## Estimated Time
+### Estimated Time
 
 75–90 minutes
 
-## Scenario
+### Scenario
 
 A small-business owner has $100,000 of excess cash. She is considering investing $40,000 in a broad-market exchange-traded fund while retaining $60,000 in cash. She wants to understand the range of possible one-year values—not merely the historical average return.
 
 Use **SPY** as the default ticker. You may substitute another liquid ETF.
 
-## Decision Question
+### Decision Question
 
 Based on historical monthly returns, what is the simulated probability that the $40,000 investment loses money over the next 12 months, and what are its P10, P50, and P90 ending values?
 
-## Important Distinction
+### Important Distinction
 
 The expected return is an estimate of the center of the return distribution. Standard deviation measures dispersion around that center. Standard deviation is **not** the expected return.
 
-## Part A — Start in Excel
+### Part A — Start in Excel
 
 Create `finance_01_portfolio_risk.xlsx` with these sheets:
 
@@ -75,7 +75,7 @@ Create `finance_01_portfolio_risk.xlsx` with these sheets:
 - `Simulation_Output`
 - `Dashboard`
 
-### Data Option A — Yahoo Finance
+#### Data Option A — Yahoo Finance
 
 In Python, retrieve approximately ten years of monthly SPY data and save the untouched result to `data/raw/SPY_monthly_raw.csv`.
 
@@ -95,7 +95,7 @@ raw.to_csv("data/raw/SPY_monthly_raw.csv")
 
 If the API output structure differs, inspect the returned columns instead of forcing the code to run unchanged.
 
-### Data Option B — Synthetic Fallback
+#### Data Option B — Synthetic Fallback
 
 Generate 120 monthly returns with a modest positive mean, volatility, and occasional negative shocks. Convert them to a price series beginning at 100. Deliberately add:
 
@@ -105,7 +105,7 @@ Generate 120 monthly returns with a modest positive mean, volatility, and occasi
 - rows in descending date order; and
 - one clearly labeled provisional final row.
 
-### Cleaning Tasks
+#### Cleaning Tasks
 
 In Excel or Power Query:
 
@@ -117,7 +117,7 @@ In Excel or Power Query:
 6. Confirm prices are numeric and greater than zero.
 7. Preserve the untouched raw data.
 
-### Return Calculation
+#### Return Calculation
 
 Calculate simple monthly returns:
 
@@ -136,7 +136,7 @@ On the `Assumptions` sheet, calculate:
 
 Do not multiply the monthly arithmetic mean by 12 and then compound that number as though it were a monthly return.
 
-## Part B — Simulate in Python
+### Part B — Simulate in Python
 
 Import the cleaned monthly returns from Excel. Use **empirical bootstrap sampling** for the first model: each simulated month is randomly selected, with replacement, from the cleaned historical monthly returns.
 
@@ -163,7 +163,7 @@ Export:
 - a histogram-ready set of bins; and
 - metadata containing the seed, number of trials, ticker, data period, and refresh date.
 
-## Part C — Finish in Excel
+### Part C — Finish in Excel
 
 Build a one-page dashboard containing:
 
@@ -178,14 +178,14 @@ Build a one-page dashboard containing:
 
 Use language such as “10% of simulated outcomes were below…” rather than claiming the model knows the future.
 
-## Validation Checks
+### Validation Checks
 
 - When every sampled monthly return is replaced with the historical mean, does Python reproduce the Excel deterministic result?
 - Does changing the seed alter individual trials but leave the main summary reasonably stable?
 - Are any ending values negative? If so, investigate the input-return data.
 - Compare 1,000, 10,000, and 100,000 trials. How stable is the P10 value?
 
-## Interpretation Questions
+### Interpretation Questions
 
 1. Why can the simulated median differ from the deterministic value based on the arithmetic mean?
 2. Does the probability of loss measure maximum possible loss?
@@ -194,21 +194,21 @@ Use language such as “10% of simulated outcomes were below…” rather than c
 
 ---
 
-# Drill 2 — Municipal Engineering: Culvert Capacity Exceedance
+## Drill 2 — Municipal Engineering: Culvert Capacity Exceedance
 
-## Estimated Time
+### Estimated Time
 
 75–90 minutes
 
-## Scenario
+### Scenario
 
 A municipality has 30 years of annual peak-flow estimates for a drainage crossing. The existing culvert has an estimated hydraulic capacity of **700 cfs**. The city is considering whether the current crossing presents enough risk to justify a more detailed alternatives analysis.
 
-## Decision Question
+### Decision Question
 
 Using historical resampling, what is the probability that flow exceeds 700 cfs in any single year and at least once during the next 10 years?
 
-## Create the Raw Dataset
+### Create the Raw Dataset
 
 Create `data/raw/engineering/week_01/annual_peak_flows_dirty.csv` using this generator, then work only from the saved dirty file:
 
@@ -245,7 +245,7 @@ Path("data/raw/engineering/week_01").mkdir(parents=True, exist_ok=True)
 df.to_csv("data/raw/engineering/week_01/annual_peak_flows_dirty.csv", index=False)
 ```
 
-## Data-Cleaning Tasks
+### Data-Cleaning Tasks
 
 1. Strip whitespace and standardize column names.
 2. Coerce peak flow to numeric while logging conversion failures.
@@ -256,7 +256,7 @@ df.to_csv("data/raw/engineering/week_01/annual_peak_flows_dirty.csv", index=Fals
 7. Decide how to handle the missing flow. Do not silently replace it with the mean.
 8. Save the clean dataset and a separate exception log.
 
-## Deterministic Baseline
+### Deterministic Baseline
 
 Calculate:
 
@@ -266,11 +266,11 @@ Calculate:
 
 Plot the historical histogram and empirical CDF.
 
-## Monte Carlo Simulation
+### Monte Carlo Simulation
 
 Use empirical bootstrap sampling from the cleaned annual peaks.
 
-### Model A — One-Year Risk
+#### Model A — One-Year Risk
 
 Run 100,000 trials, sampling one annual peak in each trial.
 
@@ -278,7 +278,7 @@ Run 100,000 trials, sampling one annual peak in each trial.
 Exceedance = Simulated Peak Flow > 700 cfs
 ```
 
-### Model B — Ten-Year Planning-Horizon Risk
+#### Model B — Ten-Year Planning-Horizon Risk
 
 Run 100,000 trials containing 10 sampled annual peaks. A trial is a failure if **one or more** of its ten years exceeds 700 cfs.
 
@@ -290,7 +290,7 @@ Calculate:
 - distribution of the maximum ten-year flow; and
 - P50, P80, P90, and P95 of the maximum ten-year flow.
 
-## Analytical Check
+### Analytical Check
 
 If annual events are assumed independent and annual exceedance probability is `p`, compare the simulated result with:
 
@@ -300,7 +300,7 @@ P(at least one exceedance in n years) = 1 - (1 - p)^n
 
 Explain why a 10% annual exceedance probability does **not** mean a 10% chance over ten years.
 
-## Deliverable
+### Deliverable
 
 Create a one-page Excel or Markdown decision summary containing:
 
@@ -314,7 +314,7 @@ Create a one-page Excel or Markdown decision summary containing:
 
 Do not call the empirical result a regulatory design storm or a calibrated flood-frequency analysis.
 
-## Interpretation Questions
+### Interpretation Questions
 
 1. What assumption permits the analytical 10-year formula?
 2. How does the short record affect confidence in tail risk?
@@ -323,13 +323,13 @@ Do not call the empirical result a regulatory design storm or a calibrated flood
 
 ---
 
-# Drill 3 — Finance Companion: Distribution Choice Challenge
+## Drill 3 — Finance Companion: Distribution Choice Challenge
 
-## Estimated Time
+### Estimated Time
 
 30–45 minutes
 
-## Scenario
+### Scenario
 
 Blue Ridge Digital is preparing a 13-week cash forecast. Management gives you these uncertain inputs:
 
@@ -341,7 +341,7 @@ Blue Ridge Digital is preparing a 13-week cash forecast. Management gives you th
 | Monthly software cost | $18,000 | Contractual base plus usage charges |
 | Client churn event | 0 or 1 | Either occurs or does not occur during the forecast |
 
-## Task
+### Task
 
 For each input:
 
@@ -359,7 +359,7 @@ Input | Unit | Base Case | Uncertainty Method | Parameters | Bounds |
 Dependency | Data Source | Rationale | Owner | Review Date
 ```
 
-## Mini-Simulation
+### Mini-Simulation
 
 Choose **weekly new sales** and compare 10,000 samples from:
 
@@ -368,19 +368,19 @@ Choose **weekly new sales** and compare 10,000 samples from:
 
 Compare the minimum, maximum, mean, median, P10, and P90. Identify any impossible or implausible values.
 
-## Interpretation Question
+### Interpretation Question
 
 Which distribution would you use provisionally, and what evidence could cause you to change it?
 
 ---
 
-# Drill 4 — Municipal Engineering Companion: Convergence and Contingency
+## Drill 4 — Municipal Engineering Companion: Convergence and Contingency
 
-## Estimated Time
+### Estimated Time
 
 30–45 minutes
 
-## Scenario
+### Scenario
 
 A preliminary water-main estimate contains the following uncertain cost components:
 
@@ -394,17 +394,17 @@ A preliminary water-main estimate contains the following uncertain cost componen
 For this introductory drill, assume each component varies independently using triangular distributions:
 
 | Component | Low | Most likely | High |
-|---|---:|---:|---:|
+| --- | ---: | ---: | ---: |
 | Pipeline construction | 90% | 100% | 125% |
 | Roadway restoration | 85% | 100% | 140% |
 | Utility conflicts | 50% | 100% | 250% |
 | Mobilization/general conditions | 95% | 100% | 120% |
 
-## Decision Question
+### Decision Question
 
 What contingency is required for the authorized project budget to equal the simulated P80 cost?
 
-## Tasks
+### Tasks
 
 1. Calculate the deterministic base estimate.
 2. Simulate total cost using 100, 1,000, 10,000, and 100,000 trials.
@@ -419,11 +419,11 @@ Contingency % = P80 Contingency / Deterministic Base Estimate
 5. Plot P80 versus trial count.
 6. Repeat each trial count using five different seeds and compare stability.
 
-## Important Limitation
+### Important Limitation
 
 Independence is a temporary teaching assumption. Construction components often share escalation, market, weather, site-condition, and schedule drivers. Note how independence may understate aggregate risk.
 
-## Interpretation Questions
+### Interpretation Questions
 
 1. At what trial count does P80 become sufficiently stable for this exercise?
 2. Why is the maximum simulated value a poor basis for routine contingency?
@@ -432,7 +432,7 @@ Independence is a temporary teaching assumption. Construction components often s
 
 ---
 
-# Weekly Review
+## Weekly Review
 
 After all four drills, write a 200–300 word reflection answering:
 
@@ -442,7 +442,7 @@ After all four drills, write a 200–300 word reflection answering:
 4. What distinction can you now make between expected return and volatility?
 5. What one modeling habit will you carry into Week 2?
 
-## Week 1 Completion Checklist
+### Week 1 Completion Checklist
 
 - [ ] Raw data retained unchanged
 - [ ] Cleaning decisions documented
@@ -456,7 +456,7 @@ After all four drills, write a 200–300 word reflection answering:
 - [ ] Limitations documented
 - [ ] Interpretation questions answered in the learner's own words
 
-## Optional Solution Checkpoints
+### Optional Solution Checkpoints
 
 Use these only after attempting the drills:
 
