@@ -15,6 +15,7 @@ wheels/
 # IDE and editor files
 .vscode/
 .idea/
+.spyproject/
 
 # data files
 data/
